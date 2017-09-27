@@ -1,0 +1,210 @@
+<html>
+<head>
+<title>Computer Vision Project</title>
+<link href='http://fonts.googleapis.com/css?family=Nunito:300|Crimson+Text|Droid+Sans+Mono' rel='stylesheet' type='text/css'>
+<link rel="stylesheet" title="Default" href="styles/github.css">
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"></script>
+
+<link rel="stylesheet" href="highlighting/styles/default.css">
+<script src="highlighting/highlight.pack.js"></script>
+
+<style type="text/css">
+body {
+	margin: 0px;
+	width: 100%;
+	font-family: 'Crimson Text', serif;
+	font-size: 20px;
+	background: #fcfcfc;
+}
+h1 {
+	font-family: 'Nunito', sans-serif;
+	font-weight: normal;
+	font-size: 28px;
+	margin: 25px 0px 0px 0px;
+	text-transform: lowercase;
+
+}
+
+h2 {
+	font-family: 'Nunito', sans-serif;
+	font-weight: normal;
+	font-size: 32px;
+	margin: 15px 0px 35px 0px;
+	color: #333;
+	word-spacing: 3px;
+}
+
+h3 {
+	font-family: 'Nunito', sans-serif;
+	font-weight: normal;
+	font-size: 26px;
+	margin: 10px 0px 10px 0px;
+	color: #333;
+	word-spacing: 2px;
+}
+h4 {
+	font-family: 'Nunito', sans-serif;
+	font-weight: normal;
+	font-size: 22px;
+	margin: 10px 0px 10px 0px;
+	color: #333;
+	word-spacing: 2px;
+}
+
+h5 {
+	font-family: 'Nunito', sans-serif;
+	font-weight: normal;
+	font-size: 18px;
+	margin: 10px 0px 10px 0px;
+	color: #111;
+	word-spacing: 2px;
+}
+
+p, li {
+	color: #444;
+}
+
+a {
+	color: #DE3737;
+}
+
+.container {
+	margin: 0px auto 0px auto;
+	width: 960px;
+}
+
+#header {
+	background: #333;
+	width: 100%;
+}
+
+#headersub {
+	color: #ccc;
+	width: 960px;
+	margin: 0px auto 0px auto;
+	padding: 20px 0px 20px 0px;
+}
+
+.chart {
+	width: 480px;
+}
+.lol {
+	font-size: 16px;
+	color: #888;
+	font-style: italic;
+}
+.sep {
+	height: 1px;
+	width: 100%;
+	background: #999;
+	margin: 20px 0px 20px 0px;
+}
+.footer{
+	font-size: 16px;
+}
+.latex {
+	width: 100%;
+}
+
+.latex img {
+	display: block;
+	margin: 0px auto 0px auto;
+}
+
+pre {
+	font-family: 'Droid Sans Mono';
+	font-size: 14px;
+}
+
+td img {
+  vertical-align: middle;
+}
+
+#contents a {
+}
+</style>
+<script type="text/javascript">
+    hljs.initHighlightingOnLoad();
+</script>
+</head>
+<body>
+<div id="header" >
+<div id="headersub">
+<h1><span style="color: #DE3737">Aayush Kumar</span></h1>
+</div>
+</div>
+<div class="container">
+
+<h2>Project 2: Local Feature Matching</h2>
+
+<div style="float: right; padding: 20px">
+
+
+<p> Project 2 focused upon feature matching between given images. Going into the project, one of my largest skepticisms for feature matching
+	was the degree to which images could be taken from different angles. Although our fundamental approach more than validates the concept, it
+	is incredible to see the work done to accomadate pictures taken from notable different perspectives.
+</p>
+
+<div style="clear:both">
+<h3>Intro</h3>
+
+<p> I looked forward to using the sift filter, something which frankly I attribute with the most generalized yet reliable approaches to feature categorizing. It consistently increased my matching success rate by
+	twofold when switching from the normalized patches
+
+	After playing with my threshold for a while, I got significantly better results with gradually increasing my threshhold variable. Previously at a threshhold of 0.8, I was only
+	seeing a high 60 percent accuracy on my matched features. After finally settling with 0.95, I improved my results across the three provided images. In the end, I was able to
+	produce a 96% success rate with the photo of Notre Dame, correctly matching 87 out of 91 points. For the photo of Mount Rushmore, I was not able to generate nearly as many interest points to match,
+	largely because of the limitations of our traditional harris corner detector. Nevertheless, out of the 28 points identified, I was still able to correctly match 50% of them. As expected,
+	for the Episcopal Gaudi images, my Feature Matching algorithm was only able to identify 18 points overall, of which 5 were correctly matched resulting in a mere 28% match.
+</p>
+
+<h2>Tweaking params</h2>
+The javascript in the <code>highlighting</code> folder is configured to do syntax highlighting in code blocks such as the one below.<p>
+
+<pre><code>
+% code where i tweaked the threshold to .95 for optimal results
+%  1 - (NN1/NN2)
+dists = pdist2(features1, features2, 'euclidean');
+[sortDistVal, sortDistInd] = sort(dists, 2);
+
+% Ratio Test
+ratioT = sortDistVal(:,1) ./ sortDistVal(:,2);
+threshold = 0.95;
+
+mask = ratioT < threshold;
+
+confidences = 1 ./ ratioT(mask);
+matches = zeros(size(confidences, 1), 2);
+</code></pre>
+
+<h3>Results in a table</h3>
+
+<table border=1>
+<tr>
+<td>
+<img src="./imgs/notre/eval.jpg" width="24%"/>
+<img src="./imgs/notre/vis_arrows.jpg" width="24%"/>
+<img src="./imgs/notre/vis_dots.jpg" width="24%"/>
+</td>
+</tr>
+
+<tr>
+<td>
+		<img src="./imgs/rushmore/eval.jpg" width="24%"/>
+		<img src="./imgs/rushmore/vis_arrows.jpg" width="24%"/>
+		<img src="./imgs/rushmore/vis_dots.jpg" width="24%"/>
+</td>
+</tr>
+
+<tr>
+		<td>
+				<img src="./imgs/episcopal/eval.jpg" width="24%"/>
+				<img src="./imgs/episcopal/vis_arrows.jpg" width="24%"/>
+				<img src="./imgs/episcopal/vis_dots.jpg" width="24%"/>
+		</td>
+		</tr>
+
+</table>
+
+</body>
+</html>
